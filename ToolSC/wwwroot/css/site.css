@@ -21,3 +21,15 @@ body {
     position: absolute;
     overflow-x: scroll;
 }*/
+
+#table-data {
+    border-radius: 5px;
+    background: #dfa9e2;
+    padding: 10px;
+}
+
+#table-column {
+    border-radius: 5px;
+    background: #7cf4cc;
+    padding: 10px;
+}

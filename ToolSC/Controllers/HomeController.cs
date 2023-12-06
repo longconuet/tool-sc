@@ -58,9 +58,10 @@ namespace ToolSC.Controllers
             // validate
             if (string.IsNullOrEmpty(request.Input))
             {
-                return Json(new ResponseModel<List<string>> { Status = 0, Msg = "Please enter the input" });
+                return Json(new ResponseModel<TableDataModel> { Status = 0, Msg = "Please enter the input" });
             }
 
+            TableDataModel data = new();
             List<string> existList = new();
 
             var columns = CommonHelpers.GetNameAndTypeOfColumn(request.Input);
@@ -90,13 +91,16 @@ namespace ToolSC.Controllers
                 }
             }
 
+            data.DataList = existList;
+            data.Data = CommonHelpers.CombineDataString(existList);
+
             try
             {
-                return Json(new ResponseModel<List<string>> { Status = 1, Data = existList });
+                return Json(new ResponseModel<TableDataModel> { Status = 1, Data = data });
             }
             catch (Exception)
             {
-                return Json(new ResponseModel<List<string>> { Status = 0 });
+                return Json(new ResponseModel<TableDataModel> { Status = 0 });
             }
         }
 
@@ -106,9 +110,10 @@ namespace ToolSC.Controllers
             // validate
             if (string.IsNullOrEmpty(request.Input))
             {
-                return Json(new ResponseModel<List<string>> { Status = 0, Msg = "Please enter the input" });
+                return Json(new ResponseModel<TableDataModel> { Status = 0, Msg = "Please enter the input" });
             }
 
+            TableDataModel data = new();
             List<string> existList = new();
 
             var columns = CommonHelpers.GetNameAndTypeOfColumn(request.Input);
@@ -131,13 +136,16 @@ namespace ToolSC.Controllers
                 }
             }
 
+            data.DataList = existList;
+            data.Data = CommonHelpers.CombineDataString(existList);
+
             try
             {
-                return Json(new ResponseModel<List<string>> { Status = 1, Data = existList });
+                return Json(new ResponseModel<TableDataModel> { Status = 1, Data = data });
             }
             catch (Exception)
             {
-                return Json(new ResponseModel<List<string>> { Status = 0 });
+                return Json(new ResponseModel<TableDataModel> { Status = 0 });
             }
         }
     }

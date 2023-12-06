@@ -1,23 +1,49 @@
-$(document).ready(function () {
-    $("#copyButton").on("click", function () {
-        var hiddenInput = $("#hiddenInput");
-
-        // Copy text from the hidden input
-        hiddenInput.select();
-        document.execCommand("copy");
-
-        console.log("Text successfully copied to clipboard");
+﻿$(document).ready(function () {
+    $('#copy-btn').on('click', function () {
+        
     });
+
+    // Auto-resize textarea
+    initAutoResize();
 });
 
+function copyToClipboard(sourceEl) {
+    // Lấy nội dung cần sao chép
+    var copyText = $(`#${sourceEl}`);
+    if (copyText.val() === '') {
+        return;
+    }
+
+    // Tạo một phần tử input tạm để sao chép nội dung vào đó
+    var tempInput = $('<textarea>');
+    $('body').append(tempInput);
+    tempInput.val(copyText.val()).select();
+
+    // Sử dụng API Clipboard để sao chép nội dung vào Clipboard
+    document.execCommand('copy');
+
+    // Xóa phần tử input tạm đi
+    tempInput.remove();
+
+    // Thông báo hoặc thực hiện các hành động khác sau khi sao chép
+    alert('Copied to clipboard: ' + copyText.val());
+}
+
+function initAutoResize() {
+    $('textarea').on('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+}
+
 function getColumnDetail() {
-    if ($('#input').val() == '') {
+    if ($('#table-design').val() == '') {
         toastr.error("Please enter input", "Error");
         return;
     }
 
     var dataObj = {
-        Input: $('#input').val()
+        Input: $('#table-design').val()
     };
 
     $.ajax({
@@ -55,13 +81,13 @@ function getColumnDetail() {
 }
 
 function genTableData() {
-    if ($('#input').val() == '') {
+    if ($('#table-design').val() == '') {
         toastr.error("Please enter input", "Error");
         return;
     }
 
     var dataObj = {
-        Input: $('#input').val()
+        Input: $('#table-design').val()
     };
 
     $.ajax({
@@ -75,10 +101,12 @@ function genTableData() {
         success: function (result) {
             if (result.status == 1) {
                 let htmlDiv = '';
-                $.each(result.data, function (index, item) {
+                $.each(result.data.dataList, function (index, item) {
                     htmlDiv += `<div>${item}</div>`;
                 });
                 $('#table-data').html(htmlDiv);
+                $('#table-data-textarea').val(result.data.data);
+                initAutoResize();
             } else {
                 toastr.error(result.msg, "Error");
             }
@@ -90,13 +118,13 @@ function genTableData() {
 }
 
 function genTableDataFullLength() {
-    if ($('#input').val() == '') {
+    if ($('#table-design').val() == '') {
         toastr.error("Please enter input", "Error");
         return;
     }
 
     var dataObj = {
-        Input: $('#input').val()
+        Input: $('#table-design').val()
     };
 
     $.ajax({
@@ -110,10 +138,12 @@ function genTableDataFullLength() {
         success: function (result) {
             if (result.status == 1) {
                 let htmlDiv = '';
-                $.each(result.data, function (index, item) {
+                $.each(result.data.dataList, function (index, item) {
                     htmlDiv += `<div>${item}</div>`;
                 });
                 $('#table-data').html(htmlDiv);
+                $('#table-data-textarea').val(result.data.data);
+                initAutoResize();
             } else {
                 toastr.error(result.msg, "Error");
             }

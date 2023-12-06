@@ -8,30 +8,72 @@
 
     <button id="copyButton">Copy Text</button> *@
 
-    <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Table design</label>
-        <textarea class="form-control" id="input" rows="3"></textarea>
-    </div>
-    <button type="button" class="btn btn-primary" onclick="getColumnDetail()">Get detail</button>
-    <button type="button" class="btn btn-primary" onclick="genTableData()">Gen data</button>
-    <button type="button" class="btn btn-primary" onclick="genTableDataFullLength()">Gen data full-length</button>
-
     <div class="row">
-        <div class="col-md-8 text-bg-secondary">
-            <div id="table-column">
-                <div class="row">
-                    <div class="col-md-2" id="column-no"></div>
-                    <div class="col-md-4" id="column-name"></div>
-                    <div class="col-md-4" id="column-type"></div>
-                    <div class="col-md-2" id="column-length"></div>
+        <div class="col-md-1">
+            <div style="position: fixed">
+                <div class="mb-4"><img src="img/noel-tree.gif" title="noel-img" style="max-height: 140px; max-width: 140px;" /></div>
+                <div class="mb-4"><img src="img/tuan-loc.gif" title="noel-img" style="max-height: 140px; max-width: 140px;" /></div>
+                <div class="mb-4"><img src="img/tuan-loc-1.gif" title="noel-img" style="max-height: 140px; max-width: 140px;" /></div>
+                <div class="mb-4"><img src="img/tuan-loc-3.gif" title="noel-img" style="max-height: 140px; max-width: 140px;" /></div>
+                <div class="mb-4"><img src="img/meo.gif" title="noel-img" style="max-height: 140px; max-width: 140px;" /></div>
+            </div>
+        </div>
+        <div class="col-md-11">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label for="kinoId" class="form-label">Kino ID</label>
+                        <input type="text" class="form-control" id="kino-id" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="tableName" class="form-label">Table name</label>
+                        <input type="text" class="form-control" id="table-name" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="tableDesign" class="form-label">Table design</label>
+                        <textarea class="form-control" id="table-design" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-success" onclick="getColumnDetail()">Detail</button>
+                        <button type="button" class="btn btn-primary" onclick="genTableData()">Normal data</button>
+                        <button type="button" class="btn btn-info" onclick="genTableDataFullLength()">Full-length data</button>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-7 text-bg-secondary">
+                                <div id="table-column">
+                                    <div class="row">
+                                        <div class="col-md-2" id="column-no"></div>
+                                        <div class="col-md-4" id="column-name"></div>
+                                        <div class="col-md-4" id="column-type"></div>
+                                        <div class="col-md-2" id="column-length"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div id="table-data" class="table-data mb-3">
+                                </div>
+                                <textarea class="form-control mb-3" id="table-data-textarea" rows="3" hidden></textarea>
+                                @* <textarea class="form-control mb-3" id="table-data-column" rows="3" hidden></textarea> *@
+                                <button type="button" class="btn btn-primary" id="copy-value-btn" onclick="copyToClipboard('table-data-textarea')">
+                                    <i class="fa fa-clipboard" aria-hidden="true"></i> Copy
+                                </button>
+                                @* <button type="button" class="btn btn-success" id="copy-column-btn" onclick="copyToClipboard('table-data-textarea')">
+                                <i class="fa fa-clipboard" aria-hidden="true"></i> Copy
+                                </button> *@
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div id="table-data" class="table-data">
-            </div>
+           
+            
         </div>
     </div>
+
+    
 </div>
 
 @section Scripts{

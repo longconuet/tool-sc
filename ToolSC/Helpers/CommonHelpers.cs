@@ -182,5 +182,15 @@ namespace ToolSC.Helpers
 
             return dataName;
         }
+
+        public static string CombineDataString(List<string> stringList)
+        {
+            // Sử dụng LINQ để bọc mỗi phần tử trong dấu ngoặc đơn
+            var wrappedItems = stringList.Select(item => $"'{item}'\n");
+
+            string combinedString = string.Join(",", wrappedItems);
+
+            return $"({combinedString})";
+        }
     }
 }

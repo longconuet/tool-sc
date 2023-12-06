@@ -1,0 +1,8 @@
+﻿namespace ToolSC.Models
+{
+    public class TableDataModel
+    {
+        public string Data {  get; set; }
+        public List<string> DataList {  get; set; }
+    }
+}
