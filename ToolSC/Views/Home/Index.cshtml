@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="">
+    <div class="container">
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+            <textarea class="form-control" id="input" rows="3"></textarea>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="submit()">Submit</button>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div id="table-column">
+                    <div class="row">
+                        <div class="col-md-2" id="column-no"></div>
+                        <div class="col-md-4" id="column-name"></div>
+                        <div class="col-md-4" id="column-type"></div>
+                        <div class="col-md-2" id="column-length"></div>
+                    </div>
+                </div>
+               @*  <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Length</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    </tbody>
+                </table> *@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/home.js" asp-append-version="true"></script>
+}
