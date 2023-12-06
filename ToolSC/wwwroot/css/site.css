@@ -16,3 +16,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*.table-data {
+    position: absolute;
+    overflow-x: scroll;
+}*/
