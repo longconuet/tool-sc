@@ -20,3 +20,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ToolSC.dll"]
+
+#docker build -t toolsc-image .
+
+#docker run -p 8080:80 --name toolsc-container -d toolsc-image

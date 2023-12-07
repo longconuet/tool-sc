@@ -43,6 +43,8 @@ namespace ToolSC.Helpers
                         Length = match.Groups[3].Value
                     });
                 }
+
+                data.AddRange(GenSystemColumn());
             }
 
             return data;
@@ -226,7 +228,7 @@ namespace ToolSC.Helpers
             };
         }
 
-        public static List<TableColumn> GenSystemColumn(string kinoId, string sysName)
+        public static List<TableColumn> GenSystemColumn(string kinoId = "", string sysName = "")
         {
             var dateNow = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             kinoId = !string.IsNullOrEmpty(kinoId) ? kinoId : "xxxxxxxxxx";
@@ -272,6 +274,27 @@ namespace ToolSC.Helpers
                 kinoId,
                 kinoId
             };
+        }
+
+        public static string GenColumnKeyData(int length, int index, bool fullLength = false)
+        {
+            string data = "";
+            string indexStr = $"0000000000000000000{index}";
+            length = fullLength ? length : (length >= 8 ? 6 : length);
+
+            if (length >= 5)
+            {
+                int startIndex = indexStr.Length - length + 3;
+                string rightSubstring = indexStr.Substring(startIndex);
+                data += "key" + rightSubstring;
+            }
+            else
+            {
+                int startIndex = indexStr.Length - length;
+                data = indexStr.Substring(startIndex);
+            }
+
+            return data;
         }
     }
 }

@@ -22,7 +22,8 @@ function copyToClipboard(sourceEl) {
     tempInput.remove();
 
     // Thông báo hoặc thực hiện các hành động khác sau khi sao chép
-    alert('Copied to clipboard: ' + copyText.val());
+    toastr.success("Copied!", "");
+    //alert('Copied to clipboard: ' + copyText.val());
 }
 
 function initAutoResize() {
@@ -99,9 +100,18 @@ function genTableData() {
         return;
     }
 
+    let numberRecord = $('#number-record').val() != '' ? parseInt($('#number-record').val()) : 1;
+    if (numberRecord > 1 && $('#column-key').val() == '') {
+        toastr.error("Please enter column key", "Error");
+        return;
+    }
+
     var dataObj = {
         Input: $('#table-design').val(),
+        SiteCode: $('#site-code').val(),
         KinoId: $('#kino-id').val(),
+        ColumnKey: $('#column-key').val(),
+        NumberRecord: $('#number-record').val() != '' ? parseInt($('#number-record').val()) : 1,
         TableName: $('#table-name').val(),
         SystemName: $('#system-name').val(),
     };
@@ -120,6 +130,27 @@ function genTableData() {
                 $.each(result.data.dataList, function (index, item) {
                     htmlDiv += `<div>${item}</div>`;
                 });
+
+                if (result.data.multiData && result.data.multiData.length > 0) {
+                    htmlDiv += `<div class="mt-3"><button type="button" class="btn btn-primary" onclick="showNormalDataModal()">Show more data</button></div>`;
+                    
+                    let htmlthead = '<thead><tr>';
+                    let htmltbody = '<tbody><tr>';
+                    $.each(result.data.multiData, function (index, multiData) {
+                        htmlthead += `<th>Data ${index + 1}</th>`;
+
+                        let htmlTd = '<td>';
+                        $.each(multiData.dataList, function (index, multiDataItem) {
+                            htmlTd += `<div>${multiDataItem}</div>`;
+                        });
+                        htmlTd += '</td>';
+                        htmltbody += htmlTd;
+                    });
+                    htmlthead += '</tr></thead>';
+                    htmltbody += '</tr></tbody>';
+                    $('#normal-table').html(htmlthead + htmltbody);
+                }                
+                
                 $('#table-data').html(htmlDiv);
                 $('#table-data-textarea').val(result.data.data);
                 $('#table-data-column').val(result.data.dataColumn);
@@ -142,7 +173,10 @@ function genTableDataFullLength() {
 
     var dataObj = {
         Input: $('#table-design').val(),
+        SiteCode: $('#site-code').val(),
         KinoId: $('#kino-id').val(),
+        ColumnKey: $('#column-key').val(),
+        NumberRecord: $('#number-record').val() != '' ? parseInt($('#number-record').val()) : 1,
         TableName: $('#table-name').val(),
         SystemName: $('#system-name').val(),
     };
@@ -173,4 +207,8 @@ function genTableDataFullLength() {
             toastr.error(errormessage.responseText, "Error");
         }
     });
+}
+
+function showNormalDataModal() {
+    $('#normal-modal').modal('show');
 }

@@ -21,14 +21,23 @@
         <div class="col-md-11">
             <div class="row">
                 <div class="col-md-3">
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="kino-id" placeholder="KinoID: SC0104_0030_01I" />
+                    <div class="mb-1">
+                        <input type="text" class="form-control" id="site-code" value="9993273" placeholder="拠点コード: 9993273" />
+                    </div>
+                    <div class="mb-1">
+                        <input type="text" class="form-control" id="kino-id" placeholder="KinoID: SC0104_0030_01I" autocomplete="on" />
+                    </div>
+                    <div class="mb-1">
+                        <input type="text" class="form-control" id="system-name" placeholder="System name: My-PC" autocomplete="on" />
+                    </div>
+                    <div class="mb-1">
+                        <input type="text" class="form-control" id="column-key" placeholder="Column key: ファイル名" autocomplete="on" />
+                    </div>
+                    <div class="mb-1">
+                        <input type="number" class="form-control" id="number-record" placeholder="Number record: 1" min="1" max="20" autocomplete="on" hidden />
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="system-name" placeholder="Sys name: LONGNT" />
-                    </div>
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="table-name" placeholder="Table name: SC_M_会員生協" />
+                        <input type="text" class="form-control" id="table-name" placeholder="Table name: SC_M_会員生協" autocomplete="on" />
                     </div>
                     <div class="mb-3">
                         <label for="tableDesign" class="form-label">Table design</label>
@@ -69,13 +78,29 @@
                         </div>
                     </div>
                 </div>
-            </div>
-           
-            
+            </div>          
         </div>
     </div>
+</div>
 
-    
+<!-- Normal Data Modal -->
+<div class="modal fade" id="normal-modal" tabindex="-1" aria-labelledby="normalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="normalModalLabel">Multi normal data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="normal-table">
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{

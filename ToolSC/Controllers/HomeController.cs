@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Data.Common;
 using System.Diagnostics;
 using ToolSC.Helpers;
 using ToolSC.Models;
@@ -9,10 +10,12 @@ namespace ToolSC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly List<string> _sysVars;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            _sysVars = CommonHelpers.GetSystemVariables();
         }
 
         public IActionResult Index()
@@ -63,12 +66,31 @@ namespace ToolSC.Controllers
 
             TableDataModel data = new();
             List<string> existList = new();
+            string columnKeyData = "";
 
             var columns = CommonHelpers.GetNameAndTypeOfColumn(request.Input);
             if (columns.Any())
             {
                 foreach (var column in columns)
                 {
+                    if (column.Name == "拠点コード")
+                    {
+                        existList.Add(!string.IsNullOrEmpty(request.SiteCode) ? request.SiteCode : "9993273");
+                        continue;
+                    }
+
+                    if (_sysVars.Contains(column.Name))
+                    {
+                        continue;
+                    }
+
+                    if (!string.IsNullOrEmpty(request.ColumnKey) && column.Name == request.ColumnKey)
+                    {
+                        columnKeyData = CommonHelpers.GenColumnKeyData(int.Parse(column.Length), 1);
+                        existList.Add(columnKeyData);
+                        continue;
+                    }
+
                     string columnData;
                     string columnType = column.Type;
                     if (columnType == "int" || columnType == "bigint")
@@ -95,6 +117,39 @@ namespace ToolSC.Controllers
             data.DataList = existList;
             data.Data = CommonHelpers.CombineDataString(existList);
             data.DataColumn = CommonHelpers.ConvertDataToColumn(existList);
+
+            // multi record
+            if (request.NumberRecord > 1)
+            {
+                if (string.IsNullOrEmpty(request.ColumnKey))
+                {
+                    return Json(new ResponseModel<TableDataModel> { Status = 0, Msg = "Please enter column key" });
+                }
+
+                var columnKeyName = columns.FirstOrDefault(x => x.Name == request.ColumnKey);
+                if (columnKeyName == null)
+                {
+                    return Json(new ResponseModel<TableDataModel> { Status = 0, Msg = "Column key not found" });
+                }
+
+                List<TableDataModel> multiRecord = new();
+                for (int i = 1; i <= request.NumberRecord; i++)
+                {
+                    string newColumnKeyData = CommonHelpers.GenColumnKeyData(int.Parse(columnKeyName.Length), i);
+                    var newDataList = existList.Select(x => x == columnKeyData ? newColumnKeyData : x).ToList();
+
+                    TableDataModel newData = new()
+                    {
+                        DataList = newDataList,
+                        Data = CommonHelpers.CombineDataString(newDataList),
+                        DataColumn = CommonHelpers.ConvertDataToColumn(newDataList)
+                    };
+
+                    multiRecord.Add(newData);
+                }
+
+                data.MultiData = multiRecord;
+            }            
 
             try
             {
@@ -123,6 +178,23 @@ namespace ToolSC.Controllers
             {
                 foreach (var column in columns)
                 {
+                    if (column.Name == "拠点コード")
+                    {
+                        existList.Add(!string.IsNullOrEmpty(request.SiteCode) ? request.SiteCode : "9993273");
+                        continue;
+                    }
+
+                    if (_sysVars.Contains(column.Name))
+                    {
+                        continue;
+                    }
+
+                    if (!string.IsNullOrEmpty(request.ColumnKey) && column.Name == request.ColumnKey)
+                    {
+                        existList.Add(CommonHelpers.GenColumnKeyData(int.Parse(column.Length), 1, true));
+                        continue;
+                    }
+
                     string columnData;
                     string columnType = column.Type;
                     if (columnType == "int" || columnType == "bigint")
