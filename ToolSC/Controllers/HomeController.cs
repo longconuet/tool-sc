@@ -91,8 +91,10 @@ namespace ToolSC.Controllers
                 }
             }
 
+            existList.AddRange(CommonHelpers.GenSystemData(request.KinoId, request.SystemName));
             data.DataList = existList;
             data.Data = CommonHelpers.CombineDataString(existList);
+            data.DataColumn = CommonHelpers.ConvertDataToColumn(existList);
 
             try
             {
@@ -136,8 +138,10 @@ namespace ToolSC.Controllers
                 }
             }
 
+            existList.AddRange(CommonHelpers.GenSystemData(request.KinoId, request.SystemName));
             data.DataList = existList;
             data.Data = CommonHelpers.CombineDataString(existList);
+            data.DataColumn = CommonHelpers.ConvertDataToColumn(existList);
 
             try
             {

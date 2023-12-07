@@ -1,8 +1,4 @@
 ﻿$(document).ready(function () {
-    $('#copy-btn').on('click', function () {
-        
-    });
-
     // Auto-resize textarea
     initAutoResize();
 });
@@ -43,7 +39,10 @@ function getColumnDetail() {
     }
 
     var dataObj = {
-        Input: $('#table-design').val()
+        Input: $('#table-design').val(),
+        KinoId: $('#kino-id').val(),
+        TableName: $('#table-name').val(),
+        SystemName: $('#system-name').val(),
     };
 
     $.ajax({
@@ -60,16 +59,30 @@ function getColumnDetail() {
                 let htmlDivName = '';
                 let htmlDivType = '';
                 let htmlDivLength = '';
+
+                let htmlTextareaName = '';
+                let htmlTextareaType = '';
+                let htmlTextareaLength = '';
+
                 $.each(result.data, function (index, item) {
                     htmlDivNo += `<div>${index + 1}</div>`;
                     htmlDivName += `<div>${item.name}</div>`;
                     htmlDivType += `<div>${item.type}</div>`;
                     htmlDivLength += `<div>${item.length != '' ? item.length : '-'}</div>`;
+
+                    htmlTextareaName += `${item.name}\n`;
+                    htmlTextareaType += `${item.type}\n`;
+                    htmlTextareaLength += `${item.length != '' ? item.length : '-'}\n`;
                 });
+
                 $('#column-no').html(htmlDivNo);
-                $('#column-name').html(htmlDivName);
-                $('#column-type').html(htmlDivType);
-                $('#column-length').html(htmlDivLength);
+                $('#column-name').html(htmlDivName + `<textarea id="column-name-textarea" hidden></textarea>` + `<button type="button" class="btn btn-primary" onclick="copyToClipboard('column-name-textarea')">Copy</button>`);
+                $('#column-type').html(htmlDivType + `<textarea id="column-type-textarea" hidden></textarea>` + `<button type="button" class="btn btn-primary" onclick="copyToClipboard('column-type-textarea')">Copy</button>`);
+                $('#column-length').html(htmlDivLength + `<textarea id="column-length-textarea" hidden></textarea>` + `<button type="button" class="btn btn-primary" onclick="copyToClipboard('column-length-textarea')">Copy</button>`);
+
+                $('#column-name-textarea').val(htmlTextareaName);
+                $('#column-type-textarea').val(htmlTextareaType);
+                $('#column-length-textarea').val(htmlTextareaLength);
             } else {
                 toastr.error(result.msg, "Error");
             }
@@ -87,7 +100,10 @@ function genTableData() {
     }
 
     var dataObj = {
-        Input: $('#table-design').val()
+        Input: $('#table-design').val(),
+        KinoId: $('#kino-id').val(),
+        TableName: $('#table-name').val(),
+        SystemName: $('#system-name').val(),
     };
 
     $.ajax({
@@ -106,6 +122,7 @@ function genTableData() {
                 });
                 $('#table-data').html(htmlDiv);
                 $('#table-data-textarea').val(result.data.data);
+                $('#table-data-column').val(result.data.dataColumn);
                 initAutoResize();
             } else {
                 toastr.error(result.msg, "Error");
@@ -124,7 +141,10 @@ function genTableDataFullLength() {
     }
 
     var dataObj = {
-        Input: $('#table-design').val()
+        Input: $('#table-design').val(),
+        KinoId: $('#kino-id').val(),
+        TableName: $('#table-name').val(),
+        SystemName: $('#system-name').val(),
     };
 
     $.ajax({
@@ -143,6 +163,7 @@ function genTableDataFullLength() {
                 });
                 $('#table-data').html(htmlDiv);
                 $('#table-data-textarea').val(result.data.data);
+                $('#table-data-column').val(result.data.dataColumn);
                 initAutoResize();
             } else {
                 toastr.error(result.msg, "Error");

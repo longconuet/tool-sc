@@ -22,12 +22,13 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="mb-3">
-                        <label for="kinoId" class="form-label">Kino ID</label>
-                        <input type="text" class="form-control" id="kino-id" />
+                        <input type="text" class="form-control" id="kino-id" placeholder="KinoID: SC0104_0030_01I" />
                     </div>
                     <div class="mb-3">
-                        <label for="tableName" class="form-label">Table name</label>
-                        <input type="text" class="form-control" id="table-name" />
+                        <input type="text" class="form-control" id="system-name" placeholder="Sys name: LONGNT" />
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="table-name" placeholder="Table name: SC_M_会員生協" />
                     </div>
                     <div class="mb-3">
                         <label for="tableDesign" class="form-label">Table design</label>
@@ -45,9 +46,9 @@
                             <div class="col-md-7 text-bg-secondary">
                                 <div id="table-column">
                                     <div class="row">
-                                        <div class="col-md-2" id="column-no"></div>
-                                        <div class="col-md-4" id="column-name"></div>
-                                        <div class="col-md-4" id="column-type"></div>
+                                        <div class="col-md-1" id="column-no"></div>
+                                        <div class="col-md-6" id="column-name"></div>
+                                        <div class="col-md-3" id="column-type"></div>
                                         <div class="col-md-2" id="column-length"></div>
                                     </div>
                                 </div>
@@ -55,14 +56,15 @@
                             <div class="col-md-5">
                                 <div id="table-data" class="table-data mb-3">
                                 </div>
-                                <textarea class="form-control mb-3" id="table-data-textarea" rows="3" hidden></textarea>
-                                @* <textarea class="form-control mb-3" id="table-data-column" rows="3" hidden></textarea> *@
-                                <button type="button" class="btn btn-primary" id="copy-value-btn" onclick="copyToClipboard('table-data-textarea')">
-                                    <i class="fa fa-clipboard" aria-hidden="true"></i> Copy
+                                <textarea id="table-data-textarea" hidden></textarea>
+                                <textarea id="table-data-column" hidden></textarea>
+                                
+                                <button type="button" class="btn btn-success" onclick="copyToClipboard('table-data-column')">
+                                    <i class="fa fa-clipboard" aria-hidden="true"></i> Copy column
                                 </button>
-                                @* <button type="button" class="btn btn-success" id="copy-column-btn" onclick="copyToClipboard('table-data-textarea')">
-                                <i class="fa fa-clipboard" aria-hidden="true"></i> Copy
-                                </button> *@
+                                <button type="button" class="btn btn-primary" onclick="copyToClipboard('table-data-textarea')">
+                                    <i class="fa fa-clipboard" aria-hidden="true"></i> Copy data
+                                </button>
                             </div>
                         </div>
                     </div>
