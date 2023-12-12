@@ -1,12 +1,30 @@
 ﻿$(document).ready(function () {
     // Auto-resize textarea
     initAutoResize();
+
+    $("#search-column").on("input", function () {
+        // Lấy giá trị từ trường tìm kiếm
+        var searchText = $(this).val().toLowerCase();
+
+        // Ẩn tất cả các kết quả tìm kiếm
+        $(".column-name-item").hide();
+
+        // Hiển thị các kết quả tìm kiếm phù hợp với giá trị nhập vào
+        $(".column-name-item:contains('" + searchText + "')").show();
+    });
 });
+
+// Mở rộng jQuery để hỗ trợ :contains không phân biệt chữ hoa/chữ thường
+$.expr[':'].contains = function (a, i, m) {
+    return jQuery(a).text().toLowerCase()
+        .indexOf(m[3].toLowerCase()) >= 0;
+};
 
 function copyToClipboard(sourceEl) {
     // Lấy nội dung cần sao chép
     var copyText = $(`#${sourceEl}`);
     if (copyText.val() === '') {
+        toastr.warning('Nothing to copy', '')
         return;
     }
 
@@ -211,4 +229,47 @@ function genTableDataFullLength() {
 
 function showNormalDataModal() {
     $('#normal-modal').modal('show');
+}
+
+function showEnterDataManuallyModal() {
+    let tableDesign = $('#table-design').val();
+    if (tableDesign == '') {
+        toastr.error('No table design', '');
+        return;
+    }
+
+    splitTableColumn(tableDesign);
+
+    $('#enter-data-modal').modal('show');
+}
+
+function splitTableColumn(tableDesign = "") {
+    let html = '';
+
+    // Chia chuỗi thành mảng các dòng
+    var lines = tableDesign.split("\n");
+
+    // Lặp qua từng dòng và xử lý
+    $.each(lines, function (index, line) {
+        // Kiểm tra nếu dòng không trống
+        if (line.trim() !== "") {
+            // Sử dụng biểu thức chính quy để lấy ra văn bản 予定枝番
+            var match = line.match(/<([^,>]+),/);
+
+            // Kiểm tra nếu có sự trùng khớp
+            if (match) {
+                var name = match[1];
+                html += `<div class="col-md-6 column-name-item">`;
+                html += `   <div class="mb-1 row">`;
+                html += `       <label class="col-md-6 col-form-label">${line.replace(/[<,>]/g, '')}</label>`;
+                html += `       <div class="col-md-6">`;
+                html += `           <input type="text" class="form-control column-name-input" data-column-name=${name}>`;
+                html += `       </div>`;
+                html += `   </div>`;
+                html += `</div>`
+            }           
+        }
+    });
+
+    $('#enter-data-content').html(html);
 }

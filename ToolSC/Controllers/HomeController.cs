@@ -45,14 +45,7 @@ namespace ToolSC.Controllers
 
             var data = CommonHelpers.GetNameAndTypeOfColumn(request.Input);
 
-            try
-            {
-                return Json(new ResponseModel<List<TableColumn>> { Status = 1, Data = data });
-            }
-            catch (Exception)
-            {
-                return Json(new ResponseModel<List<TableColumn>> { Status = 0 });
-            }
+            return Json(new ResponseModel<List<TableColumn>> { Status = 1, Data = data });
         }
 
         [HttpPost]
@@ -73,9 +66,9 @@ namespace ToolSC.Controllers
             {
                 foreach (var column in columns)
                 {
-                    if (column.Name == "拠点コード")
+                    if (column.Name == Const.SITE_CODE_KEY)
                     {
-                        existList.Add(!string.IsNullOrEmpty(request.SiteCode) ? request.SiteCode : "9993273");
+                        existList.Add(!string.IsNullOrEmpty(request.SiteCode) ? request.SiteCode : Const.DEFAULT_SITE_CODE);
                         continue;
                     }
 
@@ -149,16 +142,9 @@ namespace ToolSC.Controllers
                 }
 
                 data.MultiData = multiRecord;
-            }            
+            }
 
-            try
-            {
-                return Json(new ResponseModel<TableDataModel> { Status = 1, Data = data });
-            }
-            catch (Exception)
-            {
-                return Json(new ResponseModel<TableDataModel> { Status = 0 });
-            }
+            return Json(new ResponseModel<TableDataModel> { Status = 1, Data = data });
         }
 
         [HttpPost]
@@ -178,9 +164,9 @@ namespace ToolSC.Controllers
             {
                 foreach (var column in columns)
                 {
-                    if (column.Name == "拠点コード")
+                    if (column.Name == Const.SITE_CODE_KEY)
                     {
-                        existList.Add(!string.IsNullOrEmpty(request.SiteCode) ? request.SiteCode : "9993273");
+                        existList.Add(!string.IsNullOrEmpty(request.SiteCode) ? request.SiteCode : Const.DEFAULT_SITE_CODE);
                         continue;
                     }
 
@@ -215,14 +201,7 @@ namespace ToolSC.Controllers
             data.Data = CommonHelpers.CombineDataString(existList);
             data.DataColumn = CommonHelpers.ConvertDataToColumn(existList);
 
-            try
-            {
-                return Json(new ResponseModel<TableDataModel> { Status = 1, Data = data });
-            }
-            catch (Exception)
-            {
-                return Json(new ResponseModel<TableDataModel> { Status = 0 });
-            }
+            return Json(new ResponseModel<TableDataModel> { Status = 1, Data = data });
         }
     }
 }

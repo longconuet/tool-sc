@@ -56,9 +56,13 @@ namespace ToolSC.Helpers
             return random.Next(minValue, maxValue + 1);
         }
 
-        public static string GenerateRandomString(int length)
+        public static string GenerateRandomString(int length, bool includeHalfWidth = false)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            if (includeHalfWidth)
+            {
+                chars += "｡｢｣､･ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝﾞﾟ";
+            }
             Random random = new();
 
             // Use Linq to create a random string of the desired length
@@ -135,13 +139,24 @@ namespace ToolSC.Helpers
             if (column.Type != "varchar")
             {
                 return data;
-            }
+            }            
 
             do
             {
-                var range = GetRangeOfLengthForRandomString(int.Parse(column.Length));
-                int length = GenerateRandomNumber(range.Item1, range.Item2);
-                data = GenerateRandomString(length);
+                if (column.Name.Contains(Const.DATE_CHAR) && column.Length == Const.DATE_VAR_LENGTH)
+                {
+                    data = DateTimeHelpers.GenerateRandomDate();
+                }
+                else if (column.Name.Contains(Const.TIME_CHAR) && column.Length == Const.TIME_VAR_LENGTH)
+                {
+                    data = DateTimeHelpers.GenerateRandomTime();
+                }
+                else
+                {
+                    var range = GetRangeOfLengthForRandomString(int.Parse(column.Length));
+                    int length = GenerateRandomNumber(range.Item1, range.Item2);
+                    data = GenerateRandomString(length);
+                }                
             } while (existList.Contains(data));
 
             return data;

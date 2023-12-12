@@ -46,9 +46,16 @@
                 </div>
                 <div class="col-md-9">
                     <div class="mb-3">
-                        <button type="button" class="btn btn-success" onclick="getColumnDetail()">Detail</button>
-                        <button type="button" class="btn btn-primary" onclick="genTableData()">Normal data</button>
-                        <button type="button" class="btn btn-info" onclick="genTableDataFullLength()">Full-length data</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-success" onclick="getColumnDetail()">Detail</button>
+                                <button type="button" class="btn btn-primary" onclick="genTableData()">Normal data</button>
+                                <button type="button" class="btn btn-info" onclick="genTableDataFullLength()">Full-length data</button>
+                            </div>
+                            <div class="col-md-6 d-flex flex-row-reverse">
+                                <button type="button" class="btn btn-success" onclick="showEnterDataManuallyModal()">Enter data manually</button>
+                            </div>
+                        </div>                        
                     </div>
                     <div class="mb-3">
                         <div class="row">
@@ -102,6 +109,28 @@
         </div>
     </div>
 </div>
+
+<!-- Enter data manually Modal -->
+<div class="modal fade" id="enter-data-modal" tabindex="-1" aria-labelledby="enterDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="normalModalLabel">Enter data manually</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="search-column" placeholder="Enter column name" />
+                </div>
+                <div class="mb-3 row" id="enter-data-content"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts{
     <script src="~/js/home.js" asp-append-version="true"></script>
