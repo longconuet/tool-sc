@@ -77,6 +77,13 @@ namespace ToolSC.Controllers
                         continue;
                     }
 
+                    var manualColumn = request.ManualData.FirstOrDefault(x => x.Name == column.Name);
+                    if (manualColumn != null && !string.IsNullOrEmpty(manualColumn.Data))
+                    {
+                        existList.Add(manualColumn.Data);
+                        continue;
+                    }
+
                     if (!string.IsNullOrEmpty(request.ColumnKey) && column.Name == request.ColumnKey)
                     {
                         columnKeyData = CommonHelpers.GenColumnKeyData(int.Parse(column.Length), 1);
@@ -172,6 +179,13 @@ namespace ToolSC.Controllers
 
                     if (_sysVars.Contains(column.Name))
                     {
+                        continue;
+                    }
+
+                    var manualColumn = request.ManualData.FirstOrDefault(x => x.Name == column.Name);
+                    if (manualColumn != null && !string.IsNullOrEmpty(manualColumn.Data))
+                    {
+                        existList.Add(manualColumn.Data);
                         continue;
                     }
 

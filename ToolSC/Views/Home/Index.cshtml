@@ -37,7 +37,7 @@
                         <input type="number" class="form-control" id="number-record" placeholder="Number record: 1" min="1" max="20" autocomplete="on" hidden />
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="table-name" placeholder="Table name: SC_M_会員生協" autocomplete="on" />
+                        <input type="text" class="form-control" id="table-name" placeholder="Table name: SC_M_会員生協" autocomplete="on" hidden />
                     </div>
                     <div class="mb-3">
                         <label for="tableDesign" class="form-label">Table design</label>
@@ -52,7 +52,8 @@
                                 <button type="button" class="btn btn-primary" onclick="genTableData()">Normal data</button>
                                 <button type="button" class="btn btn-info" onclick="genTableDataFullLength()">Full-length data</button>
                             </div>
-                            <div class="col-md-6 d-flex flex-row-reverse">
+                            <div class="col-md-6 text-end">
+                                <span id="manual-data-label" class="mr-3"></span>
                                 <button type="button" class="btn btn-success" onclick="showEnterDataManuallyModal()">Enter data manually</button>
                             </div>
                         </div>                        
@@ -126,6 +127,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="clearManualDataInput()">Clear all</button>
+                <button type="button" class="btn btn-success" onclick="applyManualData()">Apply</button>
             </div>
         </div>
     </div>

@@ -12,6 +12,18 @@
         // Hiển thị các kết quả tìm kiếm phù hợp với giá trị nhập vào
         $(".column-name-item:contains('" + searchText + "')").show();
     });
+
+    showManualDataCount();
+
+    $('.column-name-input').on('input', function () {
+        var maxLength = $(this).data('column-length');
+        var inputValue = $(this).val();
+
+        if (inputValue.length > maxLength) {
+            // Nếu độ dài vượt quá giới hạn, cắt bớt giá trị
+            $(this).val(inputValue.substring(0, maxLength));
+        }
+    });
 });
 
 // Mở rộng jQuery để hỗ trợ :contains không phân biệt chữ hoa/chữ thường
@@ -124,6 +136,16 @@ function genTableData() {
         return;
     }
 
+    var manualData = [];
+    if (manualDataList.length > 0) {
+        $.each(manualDataList, function (key, item) {
+            manualData.push({
+                Name: item.name,
+                Data: item.value
+            });
+        });
+    }
+
     var dataObj = {
         Input: $('#table-design').val(),
         SiteCode: $('#site-code').val(),
@@ -132,6 +154,7 @@ function genTableData() {
         NumberRecord: $('#number-record').val() != '' ? parseInt($('#number-record').val()) : 1,
         TableName: $('#table-name').val(),
         SystemName: $('#system-name').val(),
+        ManualData: manualData
     };
 
     $.ajax({
@@ -189,6 +212,16 @@ function genTableDataFullLength() {
         return;
     }
 
+    var manualData = [];
+    if (manualDataList.length > 0) {
+        $.each(manualDataList, function (key, item) {
+            manualData.push({
+                Name: item.name,
+                Data: item.value
+            });
+        });
+    }
+
     var dataObj = {
         Input: $('#table-design').val(),
         SiteCode: $('#site-code').val(),
@@ -197,6 +230,7 @@ function genTableDataFullLength() {
         NumberRecord: $('#number-record').val() != '' ? parseInt($('#number-record').val()) : 1,
         TableName: $('#table-name').val(),
         SystemName: $('#system-name').val(),
+        ManualData: manualData
     };
 
     $.ajax({
@@ -239,8 +273,15 @@ function showEnterDataManuallyModal() {
     }
 
     splitTableColumn(tableDesign);
+    initValidateInputLength();
 
     $('#enter-data-modal').modal('show');
+}
+
+var manualDataList = JSON.parse(localStorage.getItem('manualDataList')) || [];
+
+function saveManualDataList() {
+    localStorage.setItem('manualDataList', JSON.stringify(manualDataList));
 }
 
 function splitTableColumn(tableDesign = "") {
@@ -252,24 +293,72 @@ function splitTableColumn(tableDesign = "") {
     // Lặp qua từng dòng và xử lý
     $.each(lines, function (index, line) {
         // Kiểm tra nếu dòng không trống
-        if (line.trim() !== "") {
+        if (line.trim() !== "" && line.indexOf('SYS') == -1) {
             // Sử dụng biểu thức chính quy để lấy ra văn bản 予定枝番
-            var match = line.match(/<([^,>]+),/);
+            var match = line.match(/<(.*?),\s*(varchar|int|bigint|datetime2)(?:\((\d+)\))?,>/);
 
             // Kiểm tra nếu có sự trùng khớp
             if (match) {
-                var name = match[1];
+                let name = match[1];
+                let type = match[2];
+                let length = match[3];
+
+                var existItem = manualDataList.find(function (item) {
+                    return item.name === name
+                });
+                let inputVal = existItem ? existItem.value : ''
+                let inputType = type == 'int' ? 'number' : 'text';
+
                 html += `<div class="col-md-6 column-name-item">`;
                 html += `   <div class="mb-1 row">`;
                 html += `       <label class="col-md-6 col-form-label">${line.replace(/[<,>]/g, '')}</label>`;
                 html += `       <div class="col-md-6">`;
-                html += `           <input type="text" class="form-control column-name-input" data-column-name=${name}>`;
+                html += `           <input type="${inputType}" class="form-control column-name-input" data-column-name=${name} data-column-length=${length} value=${inputVal}>`;
                 html += `       </div>`;
                 html += `   </div>`;
                 html += `</div>`
-            }           
+            }            
         }
     });
 
     $('#enter-data-content').html(html);
+}
+
+function applyManualData() {
+    manualDataList = [];
+    
+    $('input.column-name-input').each(function (index, value) {
+        let val = $(this).val();
+        if (val != '') {
+            manualDataList.push({
+                name: $(this).data('column-name'),
+                value: val
+            });
+        }
+    });
+
+    saveManualDataList();
+    showManualDataCount();
+    $('#enter-data-modal').modal('hide');
+}
+
+function clearManualDataInput() {
+    $('input.column-name-input').val('');
+}
+
+function showManualDataCount() {
+    let count = manualDataList.length;
+    let manualDataLabel = count > 0 ? `Applied manual colums: ${count}` : '';
+    $('#manual-data-label').html(manualDataLabel);
+}
+
+function initValidateInputLength() {
+    $('.column-name-input').on('input', function () {
+        var maxLength = parseInt($(this).data('column-length'));
+        var inputValue = $(this).val();
+
+        if (inputValue.length > maxLength) {
+            $(this).val(inputValue.substring(0, maxLength));
+        }
+    });
 }
