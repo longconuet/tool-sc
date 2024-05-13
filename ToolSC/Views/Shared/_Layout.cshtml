@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/summer.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/css/phao-hoa.css" asp-append-version="true" /> *@
     <link rel="stylesheet" href="~/ToolSC.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
+    @*<header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark text-light bg-primary border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ToolSC</a>
@@ -20,30 +22,87 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                   @*  <ul class="navbar-nav flex-grow-1">
+                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                    </ul> *@
+                    </ul> 
                 </div>
             </div>
         </nav>
-    </header>
+    </header>*@
+
+   @*  <div id='snowflakeContainer'>
+        <p class='snowflake'><img style="width:15px" src="img/hoa-dao.png" /></p>
+    </div>
+    
+    <div id='maiflakeContainer'>
+        <p class='maiflake'><img style="width:15px" src="img/hoa-mai.png" /></p>
+    </div> *@
+
+    <div id='sunContainer'>
+        <p class='sun'><img style="width:50px" src="img/sun.png" /></p>
+    </div> 
+    <div id='crabContainer'>
+        <p class='crab'><img style="width:40px" src="img/cua.png" /></p>
+    </div>
+
     <div class="m-3">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <a href="javascript:void(0);">
+        <img style="position:fixed;z-index:9999;top:0;left:0;" width="150px" src="img/summer3.png" />
+    </a>
+    <a href="javascript:void(0);">
+        <img style="position:fixed;z-index:9999;top:10px;right:0;" width="150px" src="img/bia.png" />
+    </a>
+    @*<div style="position:fixed;z-index:9999;bottom:-50px;left:0;width:100%;height:104px;background:url(img/footer.png) repeat-x bottom left;"></div>*@
+    <a href="javascript:void(0);"><img style="position:fixed;z-index:9999;bottom:10px;left:10px" width="250px" src="img/summer1.png" /></a>
+    <a href="javascript:void(0);"><img style="position:fixed;z-index:9999;bottom:20px;right:10px" width="200px" src="img/summer2.png" /></a>
+
+    @* <canvas id="canvas"></canvas> *@
+
+    @*<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - ToolSC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer>*@
+
+    @*<div class="snowflakes" aria-hidden="true">
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+        <div class="snowflake">❅</div>
+        <div class="snowflake">❆</div>
+    </div>*@
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @* <script src="~/js/tet.js" asp-append-version="true"></script> *@
+    @* <script src="~/js/phao-hoa.js" asp-append-version="true"></script> *@
+    <script src="~/js/summer.js" asp-append-version="true"></script>
+    <script type='text/javascript'>
+        //$(function () {
+        //    $('html').append('<img id="halo" title="Happy Noel" style="cursor:pointer;position:fixed;z-index:99999" height="120" src="img/santa3.gif"/>')
+        //    setInterval(function () {
+        //        var $X = Math.ceil(Math.random() * $(window).width())
+        //        var $Y = Math.ceil(Math.random() * $(window).height())
+        //        $('img#halo').animate({ 'left': $X, 'top': $Y }, 8000)
+        //    }, 5000)
+        //})
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

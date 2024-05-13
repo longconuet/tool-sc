@@ -2,7 +2,7 @@
 {
     public class DateTimeHelpers
     {
-        public static string GenerateRandomDate()
+        public static string GenerateRandomDate(string length = Const.DATE_VAR_LENGTH_8)
         {
             Random random = new();
             DateTime randomDateTime;
@@ -17,7 +17,7 @@
 
             } while (!IsValidDate(randomDateTime));
 
-            return randomDateTime.ToString("yyyyMMdd");
+            return length == Const.DATE_VAR_LENGTH_8 ? randomDateTime.ToString("yyyyMMdd") : randomDateTime.ToString("MMdd");
         }
 
         public static bool IsValidDate(DateTime date)

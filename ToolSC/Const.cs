@@ -8,7 +8,8 @@
         public const string DATE_CHAR = "日";
         public const string TIME_CHAR = "時刻";
 
-        public const string DATE_VAR_LENGTH = "8";
+        public const string DATE_VAR_LENGTH_8 = "8";
+        public const string DATE_VAR_LENGTH_4 = "4";
         public const string TIME_VAR_LENGTH = "6";
     }
 }

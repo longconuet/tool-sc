@@ -10,9 +10,13 @@ namespace ToolSC.Helpers
     {
         public static int CountByteLength(string input)
         {
-            // Chuyển chuỗi sang mảng byte sử dụng UTF-8 encoding
-            byte[] utf8Bytes = Encoding.UTF8.GetBytes(input);
-            return utf8Bytes.Length;
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Encoding encoding = Encoding.GetEncoding("shift-jis");
+            return encoding.GetByteCount(input);
+
+            //// Chuyển chuỗi sang mảng byte sử dụng UTF-8 encoding
+            //byte[] utf8Bytes = Encoding.UTF8.GetBytes(input);
+            //return utf8Bytes.Length;
         }
 
         public static List<TableColumn> GetNameAndTypeOfColumn(string input)
@@ -21,7 +25,7 @@ namespace ToolSC.Helpers
             var sysVars = GetSystemVariables();
 
             // Biểu thức chính quy
-            string pattern = @"<(.*?),\s*(varchar|int|bigint|datetime2)(?:\((\d+)\))?,>";
+            string pattern = @"<(.*?),\s*(varchar|int|bigint|datetime2|float|decimal)(?:\((\d+)\))?,>";
 
             // Sử dụng Regex.Matches để tìm kiếm tất cả các kết quả
             MatchCollection matches = Regex.Matches(input, pattern);
@@ -54,6 +58,12 @@ namespace ToolSC.Helpers
         {
             Random random = new();
             return random.Next(minValue, maxValue + 1);
+        }
+
+        public static double GenerateRandomDoubleNumber(double minValue, double maxValue)
+        {
+            Random random = new();
+            return Math.Round(minValue + (random.NextDouble() * (maxValue - minValue)), 2);
         }
 
         public static string GenerateRandomString(int length, bool includeHalfWidth = false)
@@ -104,7 +114,7 @@ namespace ToolSC.Helpers
             string randomNumber;
             do
             {
-                randomNumber = GenerateRandomNumber(10, 100).ToString();
+                randomNumber = column.Type == "float" || column.Type == "decimal" ? GenerateRandomDoubleNumber(10, 100).ToString() : GenerateRandomNumber(10, 100).ToString();
             } while (existList.Contains(randomNumber));
 
             return randomNumber;
@@ -124,11 +134,18 @@ namespace ToolSC.Helpers
                 return column.Name;
             }
 
+            int counter = 0;
             do
             {
-                int endNumSubstr = GenerateRandomNumber(1, column.Name.Length / 2);
+                if (counter == 10)
+                {
+                    return GenerateColumnDataFromRandomString(column, existList);
+                }
+
+                int endNumSubstr = GenerateRandomNumber(1, column.Name.Length);
                 data = column.Name.Substring(0, endNumSubstr);
-            } while (existList.Contains(data));
+                counter++;
+            } while (existList.Contains(data) || (CountByteLength(data) > int.Parse(column.Length)));
 
             return data;
         }
@@ -143,9 +160,9 @@ namespace ToolSC.Helpers
 
             do
             {
-                if (column.Name.Contains(Const.DATE_CHAR) && column.Length == Const.DATE_VAR_LENGTH)
+                if (column.Name.Contains(Const.DATE_CHAR) && (column.Length == Const.DATE_VAR_LENGTH_8 || column.Length == Const.DATE_VAR_LENGTH_4))
                 {
-                    data = DateTimeHelpers.GenerateRandomDate();
+                    data = DateTimeHelpers.GenerateRandomDate(column.Length);
                 }
                 else if (column.Name.Contains(Const.TIME_CHAR) && column.Length == Const.TIME_VAR_LENGTH)
                 {
@@ -252,18 +269,18 @@ namespace ToolSC.Helpers
 
             return new List<TableColumn>
             {
-                new TableColumn { Name = "SYS作成日時", Type = "datetime2", Length = "7", Data = dateNow },
-                new TableColumn { Name = "SYS作成ログインアカウント名", Type = "varchar", Length = "50", Data = jobName },
-                new TableColumn { Name = "SYS作成サーバー名", Type = "varchar", Length = "20", Data = sysName },
-                new TableColumn { Name = "SYS作成機能ID", Type = "varchar", Length = "15", Data = kinoId },
-                new TableColumn { Name = "SYS作成ルートジョブ実行ID", Type = "varchar", Length = "50", Data = kinoId },
-                new TableColumn { Name = "SYS作成ジョブID", Type = "varchar", Length = "50", Data = kinoId },
-                new TableColumn { Name = "SYS最終更新日時", Type = "datetime2", Length = "7", Data = dateNow },
-                new TableColumn { Name = "SYS最終更新ログインアカウント名", Type = "varchar", Length = "50", Data = jobName },
-                new TableColumn { Name = "SYS最終更新サーバー名", Type = "varchar", Length = "20", Data = sysName },
-                new TableColumn { Name = "SYS最終更新機能ID", Type = "varchar", Length = "15", Data = kinoId },
-                new TableColumn { Name = "SYS最終更新ルートジョブ実行ID", Type = "varchar", Length = "50", Data = kinoId },
-                new TableColumn { Name = "SYS最終更新ジョブID", Type = "varchar", Length = "50", Data = kinoId },
+                new() { Name = "SYS作成日時", Type = "datetime2", Length = "7", Data = dateNow },
+                new() { Name = "SYS作成ログインアカウント名", Type = "varchar", Length = "50", Data = jobName },
+                new() { Name = "SYS作成サーバー名", Type = "varchar", Length = "20", Data = sysName },
+                new() { Name = "SYS作成機能ID", Type = "varchar", Length = "15", Data = kinoId },
+                new() { Name = "SYS作成ルートジョブ実行ID", Type = "varchar", Length = "50", Data = kinoId },
+                new() { Name = "SYS作成ジョブID", Type = "varchar", Length = "50", Data = kinoId },
+                new() { Name = "SYS最終更新日時", Type = "datetime2", Length = "7", Data = dateNow },
+                new() { Name = "SYS最終更新ログインアカウント名", Type = "varchar", Length = "50", Data = jobName },
+                new() { Name = "SYS最終更新サーバー名", Type = "varchar", Length = "20", Data = sysName },
+                new() { Name = "SYS最終更新機能ID", Type = "varchar", Length = "15", Data = kinoId },
+                new() { Name = "SYS最終更新ルートジョブ実行ID", Type = "varchar", Length = "50", Data = kinoId },
+                new() { Name = "SYS最終更新ジョブID", Type = "varchar", Length = "50", Data = kinoId },
             };
         }
 

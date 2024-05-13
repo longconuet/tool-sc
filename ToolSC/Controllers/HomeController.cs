@@ -93,7 +93,7 @@ namespace ToolSC.Controllers
 
                     string columnData;
                     string columnType = column.Type;
-                    if (columnType == "int" || columnType == "bigint")
+                    if (columnType == "int" || columnType == "bigint" || columnType == "float" || columnType == "decimal")
                     {
                         columnData = CommonHelpers.GenerateColumnDataNumber(column, existList);
                     }
@@ -197,7 +197,7 @@ namespace ToolSC.Controllers
 
                     string columnData;
                     string columnType = column.Type;
-                    if (columnType == "int" || columnType == "bigint")
+                    if (columnType == "int" || columnType == "bigint" || columnType == "float" || columnType == "decimal")
                     {
                         columnData = CommonHelpers.GenerateColumnDataNumber(column, existList);
                     }
